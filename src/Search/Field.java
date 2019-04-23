@@ -70,7 +70,7 @@ public class Field {
 	}
 	
 	public void BuildPath() {
-		
+		System.out.println("找到了可行解");
 	}
 	public Point SelectNext() {
 		if(open_set.isEmpty()) {

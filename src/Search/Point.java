@@ -97,9 +97,6 @@ public class Point implements Comparable<Point>{
 			//溪流
 			g.setColor(Color.blue);
 			break;
-//		case 3:
-//			g.setColor(Color.red);
-//			break;
 		case 4:
 			//沙漠
 			g.setColor(Color.yellow);

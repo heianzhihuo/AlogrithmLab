@@ -1,17 +1,11 @@
 package Search;
 
-import java.awt.Color;
 import java.awt.event.*;
-import java.util.*;
 
-import javax.swing.*;
-import javax.swing.*;
 import javax.swing.*;
 
 public class Search implements ActionListener,Runnable {
 	
-	private PriorityQueue<Point> open_set = new PriorityQueue<>();
-	private Set<Point> closeSet = new HashSet<>();
 	private Field field;
     View view;
     private JFrame frame;
@@ -20,9 +14,8 @@ public class Search implements ActionListener,Runnable {
     private String[] buttonText = {"Source","Destination","Wall","Flat","River","Desert"};
     private JButton startButton,resetButton;
     private boolean isRun = true;
-    private boolean isStep = false;
     Thread thread = new Thread(this);
-    private int speed = 5;
+    private int speed = 0;
     
     public Search(int width,int height) {
     	field = new Field(width, height);
@@ -72,7 +65,6 @@ public class Search implements ActionListener,Runnable {
     	initData();
     	speed = 400;
     	isRun = false;
-    	isStep = false;
     	frame.repaint();
     }
     
@@ -94,20 +86,20 @@ public class Search implements ActionListener,Runnable {
 					isRun = false;
 					continue;
 				}
-				try {
-					thread.sleep(speed);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					thread.sleep(speed);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 				field.ExtendPoint(p);
 				frame.repaint();
-				try {
-					thread.sleep(speed);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+//				try {
+//					thread.sleep(speed);
+//				} catch (InterruptedException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 		}
 	}
@@ -126,7 +118,7 @@ public class Search implements ActionListener,Runnable {
 		}else if(e.getSource()==resetButton) {
 			reset();
 			view.clearCommond();
-		}else {
+		}else if(!isRun) {
 			for(int i=0;i<6;i++)
 				if(e.getSource()==button[i]) {
 					view.setCommond(i+1);
