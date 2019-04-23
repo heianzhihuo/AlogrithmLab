@@ -1,106 +1,98 @@
 import java.util.Arrays;
 import java.util.Scanner;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.PreAction;
+
 /**
  * @author WenWei
  * @date 2019年4月10日
  * @time 下午5:01:53
  */
 public class QuickSort {
-
 	/**
-	 * @param args
-	 * 5000,1000,1000000;
-		0,50,60,70,80,100
+	 * 快速排序算法
 	 */
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		QuickSort quic = new QuickSort();
+		quic.Test2();
 		quic.Test();
 	}
-	
 	void Test2() {
-		Scanner in = new Scanner(System.in);
+		int n = 10;
+		int x = 0;
+		int A[] = randomArray(n, x);
+		int B[] = Arrays.copyOf(A, n);
 		long starTime,endTime;
-		while(true) {
-			int n = in.nextInt();
-			int x = in.nextInt();
-			if(n<=0 || x<0)
-				break;
-			int A[] = randomArray(n, x);
-			int B[] = Arrays.copyOf(A, n);
-			System.out.println();
-			
-			starTime = System.nanoTime();
-			Arrays.sort(B);
-			endTime = System.nanoTime();
-			System.out.print("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			
-			starTime = System.nanoTime();
-			QuickSort(A,0,n-1);
-			endTime = System.nanoTime();
-			System.out.print("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			System.out.println();
-		}
-		in.close();
+		//System.out.println();
+		
+		starTime = System.nanoTime();
+		Arrays.sort(B);
+		endTime = System.nanoTime();
+		System.out.println("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
+		for(int i=0;i<n;i++)
+			System.out.println(B[i]+"\t");
+		System.out.println();
+		
+		starTime = System.nanoTime();
+		QuickSort(A,0,n-1);
+		endTime = System.nanoTime();
+		System.out.println("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
+		for(int i=0;i<n;i++)
+			System.out.println(A[i]+"\t");
+		System.out.println();
+		System.out.println();
 	}
-	
 	private void Test() {
 		int num[] = {1000,5000};
 		int per[] = {0,50,60,70,80,90,100};
 		long starTime,endTime;
-		System.out.print("\t");
-		for(int j=0;j<per.length;j++)
-			System.out.print(per[j]+"%\t\t\t\t");
-		System.out.println();
 		for(int i=0;i<num.length;i++) {
-			System.out.print(num[i]+"\t");
 			for(int j=0;j<per.length;j++) {
+				System.out.println("n="+num[i]+",x="+per[j]);
 				int A[] = randomArray(num[i], per[j]);
 				int B[] = Arrays.copyOf(A, num[i]);
 				starTime = System.nanoTime();
 				Arrays.sort(B);
 				endTime = System.nanoTime();
-				System.out.print("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
+				System.out.print("\t\tB:"+(endTime-starTime)*1.0/1000000+"ms");
 				
 				starTime = System.nanoTime();
 				QuickSort(A,0,num[i]-1);
 				endTime = System.nanoTime();
-				System.out.print("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
+				System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms");
 			}
-			System.out.println();
 		}
 		int n = 1000000;
 		int x = 0;
 		int A[] = randomArray(n, x);
 		int B[] = Arrays.copyOf(A, n);
-		System.out.print("n="+n+",x="+x+":\t");
+		System.out.println("n="+n+",x="+x);
 		
 		starTime = System.nanoTime();
 		Arrays.sort(B);
 		endTime = System.nanoTime();
-		System.out.print("B:"+(endTime-starTime)*1.0/1000000+"ms, ");
+		System.out.print("\t\tB:"+(endTime-starTime)*1.0/1000000+"ms");
 		
 		starTime = System.nanoTime();
 		QuickSort(A,0,n-1);
 		endTime = System.nanoTime();
-		System.out.print("A:"+(endTime-starTime)*1.0/1000000+"ms");
-		System.out.println();
+		System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms");
 		
 		x = 100;
 		A = randomArray(n, x);
 		B = Arrays.copyOf(A, n);
-		System.out.print("n="+n+",x="+x+":");
+		System.out.println("n="+n+",x="+x);
 		
 		starTime = System.nanoTime();
 		Arrays.sort(B);
 		endTime = System.nanoTime();
-		System.out.print("B:"+(endTime-starTime)*1.0/1000000+"ms, ");
+		System.out.print("\t\tB:"+(endTime-starTime)*1.0/1000000+"ms");
 		
 		starTime = System.nanoTime();
 		QuickSort(A,0,n-1);
 		endTime = System.nanoTime();
-		System.out.print("A:"+(endTime-starTime)*1.0/1000000+"ms");
+		System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms");
 		System.out.println();
 	}
 	
