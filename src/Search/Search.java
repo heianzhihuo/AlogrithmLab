@@ -22,7 +22,7 @@ public class Search implements ActionListener,Runnable {
     private boolean isRun = true;
     private boolean isStep = false;
     Thread thread = new Thread(this);
-    private int speed = 300;
+    private int speed = 5;
     
     public Search(int width,int height) {
     	field = new Field(width, height);

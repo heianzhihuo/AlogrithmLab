@@ -86,18 +86,22 @@ public class Point implements Comparable<Point>{
 		
 		switch(cost) {
 		case 0:
+			//不可通过
 			g.setColor(Color.black);
 			break;
 		case 1:
+			//正常道路
 			g.setColor(Color.white);
 			break;
 		case 2:
+			//溪流
 			g.setColor(Color.blue);
 			break;
 //		case 3:
 //			g.setColor(Color.red);
 //			break;
 		case 4:
+			//沙漠
 			g.setColor(Color.yellow);
 			break;
 		default:
@@ -108,6 +112,7 @@ public class Point implements Comparable<Point>{
     	g.drawRect(x, y, size, size);
     	switch(type) {
 		case 1:
+			//
 			g.setColor(Color.gray);
 			g.fillOval(x, y, size, size);
 			break;

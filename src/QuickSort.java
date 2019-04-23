@@ -125,20 +125,20 @@ public class QuickSort {
 	
 	private int Rand_Partition(int[] A,int p,int r) {
 		int i = (int)(Math.random()*(r-p+1))+p;
-		exchange(A, r, i);
+		swap(A, r, i);
 		int x = A[r];
 		i = p-1;
 		for(int j=p;j<=r-1;j++) {
 			if(A[j]<=x) {
 				i++;
-				exchange(A, i, j);
+				swap(A, i, j);
 			}
 		}
-		exchange(A, i+1, r);	
+		swap(A, i+1, r);	
 		return i+1;
 	}
 	
-	private void exchange(int[] A,int i,int j) {
+	private void swap(int[] A,int i,int j) {
 		if(i==j)
 			return;
 		A[i] = A[i]^A[j];

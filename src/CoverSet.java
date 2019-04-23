@@ -19,7 +19,7 @@ public class CoverSet {
 		for(i=0;i<n;i++)
 			num[i] = i+1;
 		for(i=0;i<n;i++) {
-			k = (int)(Math.random()*n);
+			k = (int)(Math.random()*i);
 			int tmp = num[k];
 			num[k] = num[i];
 			num[i] = tmp; 
@@ -53,11 +53,12 @@ public class CoverSet {
 	
 	public void Test() {
 		
-		int m = 30,n = 30;
+		int m = 5000,n = 5000;
 		int X[] = new int[n];
 		Set<Integer> []F = randomSubSetFamily(m, n,20);
 		int i;
-		System.out.print("集合X的元素为"+n);
+		long startTime,endTime;
+		System.out.println("集合X的元素为"+n);
 		for(i=0;i<X.length;i++) 
 			X[i] = i+1; 
 //		System.out.println();
@@ -68,23 +69,25 @@ public class CoverSet {
 //			System.out.println();
 //		}
 		
-		
-		List<Integer> S = greedySetCover(X,F);
-		System.out.println();
-		System.out.print("贪心最小集合覆盖为："+S.size());
-		System.out.println();
+		startTime = System.nanoTime();
+		List<Integer> S1 = greedySetCover(X,F);
+		endTime = System.nanoTime();
+		System.out.print("贪心最小集合覆盖为："+S1.size());
+		System.out.println("\t时间"+(endTime-startTime)*1.0/1000000+"ms");
 //		for(int x:S) {
 //			System.out.print(x+",");
 //		}
-		System.out.println();
-		S = SetCoverLP(X, F);
-		System.out.println("LP解得最小集合覆盖为："+S.size());
-//		for(int x:S)
+		startTime = System.nanoTime();
+		List<Integer> S2 = SetCoverLP(X, F);
+		endTime = System.nanoTime();
+		System.out.print("LP解得最小集合覆盖为："+S2.size());
+		System.out.println("\t时间"+(endTime-startTime)*1.0/1000000+"ms");
+//		for(int x:S2)
 //			System.out.print(x+",");
 		System.out.println();
 		/*
 		System.out.println();
-		long startTime,endTime;
+		
 		int M[] = {100,1000,5000};
 		int N[] = {100,1000,5000};
 		for(i=0;i<M.length;i++) {
@@ -180,7 +183,7 @@ public class CoverSet {
             for(int i=1;i<=n;i++) {
             	GLPK.glp_set_col_name(lp, i, "x"+(i-1));//set labels
                 GLPK.glp_set_col_kind(lp, i, GLPKConstants.GLP_CV);
-                GLPK.glp_set_col_bnds(lp, i, GLPKConstants.GLP_DB, 0, 1.0);//set range
+                GLPK.glp_set_col_bnds(lp, i, GLPKConstants.GLP_DB, 0, 1);//set range
                 GLPK.glp_set_obj_coef(lp, i, 1.);//set objective coef
             }
             
@@ -192,11 +195,10 @@ public class CoverSet {
             
             //Create rows
             GLPK.glp_add_rows(lp, m);
-            
             //Set row details
             for(int j=1;j<=m;j++) {
             	GLPK.glp_set_row_name(lp, j, "c"+j);
-                GLPK.glp_set_row_bnds(lp, j, GLPKConstants.GLP_LO, 1.0, 0);
+                GLPK.glp_set_row_bnds(lp, j, GLPKConstants.GLP_LO, 1, 0);
                 for(int i=1;i<=n;i++) {
                 	GLPK.intArray_setitem(ind, i, i);
                 	if(F[i-1].contains(X[j-1]))
@@ -206,21 +208,22 @@ public class CoverSet {
                 }
                 GLPK.glp_set_mat_row(lp, j, n, ind, val);
             }
-            // Free memory
-            GLPK.delete_intArray(ind);
-            GLPK.delete_doubleArray(val);
             
+            // Free memory
+            //GLPK.delete_intArray(ind);
+            //GLPK.delete_doubleArray(val);
             // Solve model
             parm = new glp_smcp();
             GLPK.glp_init_smcp(parm);
-            ret = GLPK.glp_simplex(lp, parm);
-            
+            //ret = GLPK.glp_simplex(lp, parm);
+            ret = GLPK.glp_simplex(lp, null);
+            //GLPK.glp_intopt(lp, null);
             // Write model to file
             //GLPK.glp_write_lp(lp, null, "CoverSetLP.txt");
 
             // Retrieve solution
             if (ret == 0) {
-                //write_lp_solution(lp);
+//                write_lp_solution(lp);
                 for(int i=1;i<=n;i++) {
                 	double x = GLPK.glp_get_col_prim(lp, i);
                 	if(maxF*x>=1)
