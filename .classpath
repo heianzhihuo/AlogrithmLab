@@ -2,6 +2,9 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GLPK"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.USER_LIBRARY/GLPK"/>
+	<classpathentry kind="lib" path="External/glpk-java-javadoc.jar"/>
+	<classpathentry kind="lib" path="External/glpk-java-sources.jar"/>
+	<classpathentry kind="lib" path="External/glpk-java.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

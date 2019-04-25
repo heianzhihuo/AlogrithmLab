@@ -53,7 +53,7 @@ public class CoverSet {
 	
 	public void Test() {
 		
-		int m = 5000,n = 5000;
+		int m = 100,n = 100;
 		int X[] = new int[n];
 		Set<Integer> []F = randomSubSetFamily(m, n,20);
 		int i;

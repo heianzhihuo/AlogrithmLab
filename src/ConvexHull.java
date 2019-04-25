@@ -1,4 +1,7 @@
+
+import java.io.*;
 import java.util.*;
+
 
 /**
  * @author WenWei
@@ -6,6 +9,48 @@ import java.util.*;
  * @time 下午7:29:10
  */
 public class ConvexHull {
+	
+	public static void saveResult(Point[] points,HashSet<Point> convex1,HashSet<Point> convex2,HashSet<Point> convex3) {
+		try {
+			File file =new File("D:\\Develop\\eclipse-workspace\\AlogrithmLab\\Data.txt");
+			if(file.exists()==false) {
+				file.getParentFile().mkdir();
+			}
+			FileOutputStream fos = new FileOutputStream(file);
+			PrintStream ps = new PrintStream(fos);
+			for(Point p:points) {
+				ps.print(String.valueOf(p.x));
+				ps.print(",");
+				ps.print(String.valueOf(p.y));
+				ps.print(",");
+			}
+			ps.println();
+			for(Point p:convex1) {
+				ps.print(String.valueOf(p.x));
+				ps.print(",");
+				ps.print(String.valueOf(p.y));
+				ps.print(",");
+			}
+			ps.println();
+			for(Point p:convex2) {
+				ps.print(String.valueOf(p.x));
+				ps.print(",");
+				ps.print(String.valueOf(p.y));
+				ps.print(",");
+			}
+			ps.println();
+			for(Point p:convex3) {
+				ps.print(String.valueOf(p.x));
+				ps.print(",");
+				ps.print(String.valueOf(p.y));
+				ps.print(",");
+			}
+			ps.println();
+			ps.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void main(String[] args) {
 		ConvexHull hull = new ConvexHull();
@@ -31,6 +76,8 @@ public class ConvexHull {
 		System.out.println("分治计算的凸包顶点数:"+convex3.size());
 		for(Point p:convex3)
 			System.out.println(p.x+","+p.y);
+		
+		saveResult(points,convex1,convex2,convex3);
 		
 		int num[] = {100,200,500,800,1000,1500,2000,2500,3000};
 		long starTime,endTime;
@@ -65,6 +112,7 @@ public class ConvexHull {
 		}
 		
 	}
+	
 	/*点类*/
 	class Point{
 		double x,y;
