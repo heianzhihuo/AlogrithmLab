@@ -10,11 +10,11 @@ import java.util.*;
  */
 public class ConvexHull {
 	
-	public static void saveResult(Point[] points,HashSet<Point> convex1,HashSet<Point> convex2,HashSet<Point> convex3) {
+	public static void saveResult(Point[] points,Point[] convex1,Point[] convex2,Point[] convex3) {
 		try {
-			File file =new File("D:\\Develop\\eclipse-workspace\\AlogrithmLab\\Data.txt");
+			File file =new File("Data.txt");
 			if(file.exists()==false) {
-				file.getParentFile().mkdir();
+				file.mkdir();
 			}
 			FileOutputStream fos = new FileOutputStream(file);
 			PrintStream ps = new PrintStream(fos);
@@ -24,6 +24,7 @@ public class ConvexHull {
 				ps.print(String.valueOf(p.y));
 				ps.print(",");
 			}
+			
 			ps.println();
 			for(Point p:convex1) {
 				ps.print(String.valueOf(p.x));
@@ -31,6 +32,10 @@ public class ConvexHull {
 				ps.print(String.valueOf(p.y));
 				ps.print(",");
 			}
+			ps.print(String.valueOf(convex1[0].x));
+			ps.print(",");
+			ps.print(String.valueOf(convex1[0].y));
+			ps.print(",");
 			ps.println();
 			for(Point p:convex2) {
 				ps.print(String.valueOf(p.x));
@@ -38,6 +43,10 @@ public class ConvexHull {
 				ps.print(String.valueOf(p.y));
 				ps.print(",");
 			}
+			ps.print(String.valueOf(convex2[0].x));
+			ps.print(",");
+			ps.print(String.valueOf(convex2[0].y));
+			ps.print(",");
 			ps.println();
 			for(Point p:convex3) {
 				ps.print(String.valueOf(p.x));
@@ -45,6 +54,11 @@ public class ConvexHull {
 				ps.print(String.valueOf(p.y));
 				ps.print(",");
 			}
+			ps.print(String.valueOf(convex3[0].x));
+			ps.print(",");
+			ps.print(String.valueOf(convex3[0].y));
+			ps.print(",");
+			ps.println();
 			ps.println();
 			ps.close();
 		}catch(Exception e) {
@@ -56,7 +70,7 @@ public class ConvexHull {
 		ConvexHull hull = new ConvexHull();
 		Point p1 = hull.new Point(0, 0),p2 = hull.new Point(100, 100);
 		
-		int n = 10;
+		int n = 100;
 		Point[] points = hull.randomPoints(n, p1, p2);
 		System.out.println("随机生成的点集为：");
 		for(Point p:points)
@@ -77,7 +91,14 @@ public class ConvexHull {
 		for(Point p:convex3)
 			System.out.println(p.x+","+p.y);
 		
-		saveResult(points,convex1,convex2,convex3);
+		Point[] con1 = convex1.toArray(new Point[convex1.size()]);
+		Arrays.sort(con1,1,con1.length,hull.new comparator(con1[0]));
+		Point[] con2 = convex2.toArray(new Point[convex2.size()]);
+		Arrays.sort(con2,1,con2.length,hull.new comparator(con2[0]));
+		Point[] con3 = convex3.toArray(new Point[convex3.size()]);
+		Arrays.sort(con3,1,con3.length,hull.new comparator(con3[0]));
+		saveResult(points,con1,con2,con3);
+		
 		
 		int num[] = {100,200,500,800,1000,1500,2000,2500,3000};
 		long starTime,endTime;
@@ -176,9 +197,14 @@ public class ConvexHull {
 		return p1.x*p2.y-p1.y*p2.x;
 	}
 	/*第一个点，即最下方的点*/
-	private Point firstPoint = null;
+//	private Point firstPoint = null;
 	/*比较器：相对于firstPoint极角的排序*/
-	private Comparator<Point> pcomparator = new Comparator<Point>() {
+	
+	class comparator implements Comparator<Point>{
+		Point firstPoint = null;
+		public comparator(Point p) {
+			firstPoint = p;
+		}
 		@Override
 		public int compare(Point p1, Point p2) {
 			if(firstPoint==null)
@@ -188,13 +214,26 @@ public class ConvexHull {
 			int a = -sign(tmp),b = -sign(d);
 			return a!=0?a:b;
 		}
-	};
+	}
+	
+//	private Comparator<Point> pcomparator = new Comparator<Point>() {
+////		Point firstPoint = null;
+//		@Override
+//		public int compare(Point p1, Point p2) {
+//			if(firstPoint==null)
+//				return 0;
+//			double tmp = crossProduct(sub(p1,firstPoint),sub(p2,firstPoint));
+//			double d = distance(p1,firstPoint)-distance(p2,firstPoint);
+//			int a = -sign(tmp),b = -sign(d);
+//			return a!=0?a:b;
+//		}
+//	};
 	/*Gramham扫描算法*/
 	private HashSet<Point> GramhamScan(Point[] S){
 		if(S.length<=3) 
 			return new HashSet<>(Arrays.asList(S));
 		int i,k=0;
-		firstPoint = S[0];
+		Point firstPoint = S[0];
 		for(i=0;i<S.length-1;i++) {
 			Point p = S[i];
 			if(xycomparator.compare(firstPoint, p)>0) {
@@ -204,6 +243,7 @@ public class ConvexHull {
 		}
 		S[k] = S[0];
 		S[0] = firstPoint;
+		comparator pcomparator = new comparator(S[0]);
 		
 		Arrays.sort(S,1,S.length,pcomparator);
 		Stack<Point> stack = new Stack<>();
