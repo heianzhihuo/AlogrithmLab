@@ -10,56 +10,16 @@ import java.util.*;
  */
 public class ConvexHull {
 	
-	public static void saveResult(Point[] points,Point[] convex1,Point[] convex2,Point[] convex3) {
+	public static void savePointInFile(Point[] points,String fileName) {
 		try {
-			File file =new File("Data.txt");
+			File file =new File(fileName);
 			if(file.exists()==false) {
-				file.mkdir();
+				file.createNewFile();
 			}
 			FileOutputStream fos = new FileOutputStream(file);
 			PrintStream ps = new PrintStream(fos);
-			for(Point p:points) {
-				ps.print(String.valueOf(p.x));
-				ps.print(",");
-				ps.print(String.valueOf(p.y));
-				ps.print(",");
-			}
-			
-			ps.println();
-			for(Point p:convex1) {
-				ps.print(String.valueOf(p.x));
-				ps.print(",");
-				ps.print(String.valueOf(p.y));
-				ps.print(",");
-			}
-			ps.print(String.valueOf(convex1[0].x));
-			ps.print(",");
-			ps.print(String.valueOf(convex1[0].y));
-			ps.print(",");
-			ps.println();
-			for(Point p:convex2) {
-				ps.print(String.valueOf(p.x));
-				ps.print(",");
-				ps.print(String.valueOf(p.y));
-				ps.print(",");
-			}
-			ps.print(String.valueOf(convex2[0].x));
-			ps.print(",");
-			ps.print(String.valueOf(convex2[0].y));
-			ps.print(",");
-			ps.println();
-			for(Point p:convex3) {
-				ps.print(String.valueOf(p.x));
-				ps.print(",");
-				ps.print(String.valueOf(p.y));
-				ps.print(",");
-			}
-			ps.print(String.valueOf(convex3[0].x));
-			ps.print(",");
-			ps.print(String.valueOf(convex3[0].y));
-			ps.print(",");
-			ps.println();
-			ps.println();
+			for(Point p:points) 
+				ps.println(String.valueOf(p.x)+","+String.valueOf(p.y));
 			ps.close();
 		}catch(Exception e) {
 			e.printStackTrace();
@@ -70,34 +30,40 @@ public class ConvexHull {
 		ConvexHull hull = new ConvexHull();
 		Point p1 = hull.new Point(0, 0),p2 = hull.new Point(100, 100);
 		
-		int n = 100;
+		int n = 500;
 		Point[] points = hull.randomPoints(n, p1, p2);
-		System.out.println("随机生成的点集为：");
-		for(Point p:points)
-			System.out.println(p.x+","+p.y);
+//		System.out.println("随机生成的点集为：");
+//		for(Point p:points)
+//			System.out.println(p.x+","+p.y);
 		
 		HashSet<Point> convex1 = hull.GramhamScan(points);
 		System.out.println("凸包顶点数:"+convex1.size());
-		for(Point p:convex1)
-			System.out.println(p.x+","+p.y);
+//		for(Point p:convex1)
+//			System.out.println(p.x+","+p.y);
 		
 		HashSet<Point> convex2 = hull.BruteForce(points);
 		System.out.println("暴力计算的凸包顶点数:"+convex2.size());
-		for(Point p:convex2)
-			System.out.println(p.x+","+p.y);
+//		for(Point p:convex2)
+//			System.out.println(p.x+","+p.y);
 		
 		HashSet<Point> convex3 = hull.DivideConquer(points);
 		System.out.println("分治计算的凸包顶点数:"+convex3.size());
-		for(Point p:convex3)
-			System.out.println(p.x+","+p.y);
+//		for(Point p:convex3)
+//			System.out.println(p.x+","+p.y);
+		
+		savePointInFile(points,"points.txt");
 		
 		Point[] con1 = convex1.toArray(new Point[convex1.size()]);
 		Arrays.sort(con1,1,con1.length,hull.new comparator(con1[0]));
+		savePointInFile(con1,"points1.txt");
+		
 		Point[] con2 = convex2.toArray(new Point[convex2.size()]);
 		Arrays.sort(con2,1,con2.length,hull.new comparator(con2[0]));
+		savePointInFile(con2,"points2.txt");
+		
 		Point[] con3 = convex3.toArray(new Point[convex3.size()]);
 		Arrays.sort(con3,1,con3.length,hull.new comparator(con3[0]));
-		saveResult(points,con1,con2,con3);
+		savePointInFile(con3,"points3.txt");
 		
 		
 		int num[] = {100,200,500,800,1000,1500,2000,2500,3000};
