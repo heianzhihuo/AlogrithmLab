@@ -53,7 +53,7 @@ public class CoverSet {
 	
 	public void Test() {
 		
-		int m = 30,n = 30;
+		int m = 5000,n = 5000;
 		int X[] = new int[n];
 		Set<Integer> []F = randomSubSetFamily(m, n,20);
 		int i,j;
@@ -62,12 +62,12 @@ public class CoverSet {
 		for(i=0;i<X.length;i++) 
 			X[i] = i+1; 
 //		System.out.println();
-		for(i=0;i<F.length;i++) {
-			System.out.print("第"+i+"个子集为：");
-			for(int x:F[i])
-				System.out.print(x+",");
-			System.out.println();
-		}
+//		for(i=0;i<F.length;i++) {
+//			System.out.print("第"+i+"个子集为：");
+//			for(int x:F[i])
+//				System.out.print(x+",");
+//			System.out.println();
+//		}
 		
 		startTime = System.nanoTime();
 		List<Integer> S1 = greedySetCover(X,F);
@@ -97,7 +97,7 @@ public class CoverSet {
 			X = new int[n];
 			for(j=0;j<n;j++)
 				X[j] = j+1; 
-			F = randomSubSetFamily(m, n, 60);
+			F = randomSubSetFamily(m, n, 20);
 			
 			System.out.println("|X|="+n+",|F|="+m);
 			
