@@ -26,9 +26,52 @@ public class ConvexHull {
 		}
 	}
 	
+	public static void Test1() {
+		Scanner in = new Scanner(System.in);
+		System.out.println("请输入顶点数：");
+		int n = in.nextInt();
+		ConvexHull hull = new ConvexHull();
+		Point points[] = new Point[n];
+		for(int i=0;i<n;i++) {
+			int x = in.nextInt();
+			int y = in.nextInt();
+			points[i] = hull.new Point(x, y); 
+		}
+		HashSet<Point> convex1 = hull.GramhamScan(points);
+		System.out.println("凸包顶点数:"+convex1.size());
+//		for(Point p:convex1)
+//			System.out.println(p.x+","+p.y);
+		
+		HashSet<Point> convex2 = hull.BruteForce(points);
+		System.out.println("暴力计算的凸包顶点数:"+convex2.size());
+//		for(Point p:convex2)
+//			System.out.println(p.x+","+p.y);
+		
+		HashSet<Point> convex3 = hull.DivideConquer(points);
+		System.out.println("分治计算的凸包顶点数:"+convex3.size());
+//		for(Point p:convex3)
+//			System.out.println(p.x+","+p.y);
+		
+		savePointInFile(points,"points.txt");
+		
+		Point[] con1 = convex1.toArray(new Point[convex1.size()]);
+		Arrays.sort(con1,1,con1.length,hull.new comparator(con1[0]));
+		savePointInFile(con1,"points1.txt");
+		
+		Point[] con2 = convex2.toArray(new Point[convex2.size()]);
+		Arrays.sort(con2,1,con2.length,hull.new comparator(con2[0]));
+		savePointInFile(con2,"points2.txt");
+		
+		Point[] con3 = convex3.toArray(new Point[convex3.size()]);
+		Arrays.sort(con3,1,con3.length,hull.new comparator(con3[0]));
+		savePointInFile(con3,"points3.txt");
+	}
+	
 	public static void main(String[] args) {
 		ConvexHull hull = new ConvexHull();
 		Point p1 = hull.new Point(0, 0),p2 = hull.new Point(100, 100);
+		
+		//Test1();
 		
 		int n = 500;
 		Point[] points = hull.randomPoints(n, p1, p2);
@@ -165,7 +208,6 @@ public class ConvexHull {
 	/*第一个点，即最下方的点*/
 //	private Point firstPoint = null;
 	/*比较器：相对于firstPoint极角的排序*/
-	
 	class comparator implements Comparator<Point>{
 		Point firstPoint = null;
 		public comparator(Point p) {

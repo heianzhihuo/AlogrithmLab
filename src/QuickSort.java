@@ -17,8 +17,8 @@ public class QuickSort {
 		QuickSort quic = new QuickSort();
 		//quic.Test1();
 		//quic.Test2();
-		//quic.Test3();
-		quic.Test4();
+		quic.Test3();
+		//quic.Test4();
 		//quic.Test5();
 		//quic.Test6();
 	}
@@ -72,23 +72,36 @@ public class QuickSort {
 	/*n=1000000个1测试*/
 	private void Test3() {
 		int n = 1000000;
-		int x = 100;
+		int x = 80;
 		int A[] = randomArray(n, x);
-		int B[] = Arrays.copyOf(A, n);
+		
+		
 		long starTime,endTime;
 		System.out.println("n="+n+",x="+x);
 		
-		starTime = System.nanoTime();
-		Arrays.sort(B);
-		endTime = System.nanoTime();
-		System.out.println("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
+		try {
+			int C[] = Arrays.copyOf(A, n);
+			starTime = System.nanoTime();
+			newQuickSort(C, 0, n-1);
+			endTime = System.nanoTime();
+			System.out.println("C:"+(endTime-starTime)*1.0/1000000+"ms\t");
+			
+			int B[] = Arrays.copyOf(A, n);
+			starTime = System.nanoTime();
+			Arrays.sort(B);
+			endTime = System.nanoTime();
+			System.out.println("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
+			
+			starTime = System.nanoTime();
+			QuickSort(A,0,n-1);
+			endTime = System.nanoTime();
+			System.out.println("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
+			System.out.println();
+			System.out.println();
 		
-		starTime = System.nanoTime();
-		QuickSort(A,0,n-1);
-		endTime = System.nanoTime();
-		System.out.println("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
-		System.out.println();
-		System.out.println();
+		}catch(StackOverflowError e) {
+			System.out.println("StackOverflow");
+		}
 	}
 	/*n=10000 x=0,10,20,30,40,50,60,70,80,90,100测试*/
 	private void Test4() {
@@ -185,6 +198,28 @@ public class QuickSort {
 			QuickSort(A, p, q-1);
 			QuickSort(A, q+1,r);
 		}
+	}
+	
+	private void newQuickSort(int[] A,int p,int r) {
+		if(p<r) {
+			int q = Rand_Partition(A, p, r);
+			boolean flag = false;
+			for(int i=p+1;i<=q-1;i++)
+				if(A[i]!=A[p]) {
+					flag = true;
+					break;
+				}
+			if(flag)
+				newQuickSort(A, p, q-1);
+			flag = false;
+			for(int i=q+2;i<=r;i++)
+				if(A[i]!=A[q+1]) {
+					flag = true;
+					break;
+				}
+			if(flag)
+				newQuickSort(A, q+1,r);		
+			}
 	}
 	
 	private int Rand_Partition(int[] A,int p,int r) {
