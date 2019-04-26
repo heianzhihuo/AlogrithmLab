@@ -91,15 +91,18 @@ public class CoverSet {
 		
 		int M[] = {100,1000,5000};
 		int N[] = {100,1000,5000};
+		int K[] = {20,20,20};
+		int k;
 		for(i=0;i<M.length;i++) {
 			m = M[i];
 			n = N[i];
+			k = K[i];
 			X = new int[n];
 			for(j=0;j<n;j++)
 				X[j] = j+1; 
-			F = randomSubSetFamily(m, n, 60);
+			F = randomSubSetFamily(m, n, k);
 			
-			System.out.println("|X|="+n+",|F|="+m);
+			System.out.println("|X|="+n+",|F|="+m+",k="+k);
 			
 			startTime = System.nanoTime();
 			S1 = greedySetCover(X,F);
