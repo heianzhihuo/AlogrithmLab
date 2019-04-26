@@ -53,39 +53,40 @@ public class CoverSet {
 	
 	public void Test() {
 		
-		int m = 100,n = 100;
+		int m = 30,n = 30;
 		int X[] = new int[n];
 		Set<Integer> []F = randomSubSetFamily(m, n,20);
-		int i;
+		int i,j;
 		long startTime,endTime;
 		System.out.println("集合X的元素为"+n);
 		for(i=0;i<X.length;i++) 
 			X[i] = i+1; 
 //		System.out.println();
-//		for(i=0;i<F.length;i++) {
-//			System.out.print("第"+i+"个子集为：");
-//			for(int x:F[i])
-//				System.out.print(x+",");
-//			System.out.println();
-//		}
+		for(i=0;i<F.length;i++) {
+			System.out.print("第"+i+"个子集为：");
+			for(int x:F[i])
+				System.out.print(x+",");
+			System.out.println();
+		}
 		
 		startTime = System.nanoTime();
 		List<Integer> S1 = greedySetCover(X,F);
 		endTime = System.nanoTime();
-		System.out.print("贪心最小集合覆盖为："+S1.size());
-		System.out.println("\t时间"+(endTime-startTime)*1.0/1000000+"ms");
-//		for(int x:S) {
-//			System.out.print(x+",");
-//		}
+		System.out.print("贪心解为："+S1.size());
+		System.out.print("\t时间"+(endTime-startTime)*1.0/1000000+"ms\t");
+		for(int x:S1) {
+			System.out.print(x+",");
+		}
+		System.out.println();
 		startTime = System.nanoTime();
 		List<Integer> S2 = SetCoverLP(X, F);
 		endTime = System.nanoTime();
-		System.out.print("LP解得最小集合覆盖为："+S2.size());
-		System.out.println("\t时间"+(endTime-startTime)*1.0/1000000+"ms");
-//		for(int x:S2)
-//			System.out.print(x+",");
+		System.out.print("LP解为："+S2.size());
+		System.out.print("\t时间"+(endTime-startTime)*1.0/1000000+"ms\t");
+		for(int x:S2)
+			System.out.print(x+",");
 		System.out.println();
-		/*
+		
 		System.out.println();
 		
 		int M[] = {100,1000,5000};
@@ -98,20 +99,22 @@ public class CoverSet {
 				X[j] = j+1; 
 			F = randomSubSetFamily(m, n, 60);
 			
-			startTime = System.nanoTime();
-			S = greedySetCover(X,F);
-			endTime = System.nanoTime();
-			System.out.println("贪心时间："+(endTime-startTime)*1.0/1000000+"ms\t");
-			System.out.println("贪心解大小："+S.size());
+			System.out.println("|X|="+n+",|F|="+m);
 			
 			startTime = System.nanoTime();
-			S = SetCoverLP(X, F);
+			S1 = greedySetCover(X,F);
+			endTime = System.nanoTime();
+			System.out.println("贪心时间："+(endTime-startTime)*1.0/1000000+"ms\t");
+			System.out.println("贪心解大小："+S1.size());
+			
+			startTime = System.nanoTime();
+			S2 = SetCoverLP(X, F);
 			endTime = System.nanoTime();
 			System.out.println("LP时间："+(endTime-startTime)*1.0/1000000+"ms\t");
-			System.out.println("LP解大小："+S.size());
+			System.out.println("LP解大小："+S2.size());
 			System.out.println();
 		}
-		*/
+		
 	}
 	
 	/*SetCover贪心算法*/
