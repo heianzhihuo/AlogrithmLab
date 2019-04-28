@@ -15,12 +15,54 @@ public class QuickSort {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		QuickSort quic = new QuickSort();
+		quic.Test();
 		//quic.Test1();
-		//quic.Test2();
-		quic.Test3();
-		//quic.Test4();
-		//quic.Test5();
-		//quic.Test6();
+	}
+	private void Test() {
+		//int N[] = {1000000},X[] = {0};
+		//int N[] = {1000000},X[] = {100};
+		int N[] = {1000,5000,10000},X[] = {0,10,20,30,40,50,60,70,80,90,100};
+		//int N[] = {1000,5000,10000,50000,100000,500000,1000000},X[]={0};
+		//int N[] = {200000,400000,600000,800000,1000000,1200000,1400000,1600000,1800000,2000000},X[] = {0};
+		long starTime,endTime;
+		for(int n:N) {
+			System.out.println("n="+n);
+			for(int x:X) {
+				System.out.print("x="+x);
+				int A[] = randomArray(n, x);
+				try {
+					System.out.print("\tC:");
+					int C[] = Arrays.copyOf(A, n);
+					starTime = System.nanoTime();
+					newQuickSort(C, 0, n-1);
+					endTime = System.nanoTime();
+					System.out.print((endTime-starTime)*1.0/1000000+"ms");
+				}catch(StackOverflowError e) {
+					System.out.print("StackOverflow");
+				}
+				try {
+					System.out.print("\tB:");
+					int B[] = Arrays.copyOf(A, n);
+					starTime = System.nanoTime();
+					Arrays.sort(B);
+					endTime = System.nanoTime();
+					System.out.print((endTime-starTime)*1.0/1000000+"ms");
+				}catch(StackOverflowError e) {
+					System.out.print("StackOverflow");
+				}
+				try {
+					System.out.print("\tA:");
+					starTime = System.nanoTime();
+					QuickSort(A,0,n-1);
+					endTime = System.nanoTime();
+					System.out.print((endTime-starTime)*1.0/1000000+"ms");
+				}catch(StackOverflowError e) {
+					System.out.print("StackOverflow");
+				}
+				System.out.println();
+			}
+		}
+		
 	}
 	/*正确性测试*/
 	private void Test1() {
@@ -48,145 +90,13 @@ public class QuickSort {
 		System.out.println();
 		System.out.println();
 	}
-	/*n=1000000随机数测试*/
-	private void Test2() {
-		int n = 1000000;
-		int x = 0;
-		int A[] = randomArray(n, x);
-		int B[] = Arrays.copyOf(A, n);
-		long starTime,endTime;
-		System.out.println("n="+n+",x="+x);
-		
-		starTime = System.nanoTime();
-		Arrays.sort(B);
-		endTime = System.nanoTime();
-		System.out.println("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
-		
-		starTime = System.nanoTime();
-		QuickSort(A,0,n-1);
-		endTime = System.nanoTime();
-		System.out.println("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
-		System.out.println();
-		System.out.println();
-	}
-	/*n=1000000个1测试*/
-	private void Test3() {
-		int n = 1000000;
-		int x = 80;
-		int A[] = randomArray(n, x);
-		
-		
-		long starTime,endTime;
-		System.out.println("n="+n+",x="+x);
-		
-		try {
-			int C[] = Arrays.copyOf(A, n);
-			starTime = System.nanoTime();
-			newQuickSort(C, 0, n-1);
-			endTime = System.nanoTime();
-			System.out.println("C:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			
-			int B[] = Arrays.copyOf(A, n);
-			starTime = System.nanoTime();
-			Arrays.sort(B);
-			endTime = System.nanoTime();
-			System.out.println("B:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			
-			starTime = System.nanoTime();
-			QuickSort(A,0,n-1);
-			endTime = System.nanoTime();
-			System.out.println("A:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			System.out.println();
-			System.out.println();
-		
-		}catch(StackOverflowError e) {
-			System.out.println("StackOverflow");
-		}
-	}
-	/*n=10000 x=0,10,20,30,40,50,60,70,80,90,100测试*/
-	private void Test4() {
-		int n = 10000;
-		int X[] = {0,10,20,30,40,50,60,70,80,90,100};
-		System.out.println("n="+n);
-		for(int x:X) {
-			System.out.print("x="+x);
-			int A[] = randomArray(n, x);
-			int B[] = Arrays.copyOf(A, n);
-			long starTime,endTime;
-			
-			starTime = System.nanoTime();
-			Arrays.sort(B);
-			endTime = System.nanoTime();
-			System.out.print("\tB:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			
-			starTime = System.nanoTime();
-			QuickSort(A,0,n-1);
-			endTime = System.nanoTime();
-			System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms\t");
-		}
-	}
-	/*n=1000,5000 x=0,50,60,70,80,90,100测试*/
-	private void Test5() {
-		int num[] = {1000,5000};
-		int X[] = {0,50,60,70,80,90,100};
-		for(int n:num) {
-			System.out.println("n="+n);
-			for(int x:X) {
-				System.out.print("x="+x);
-				int A[] = randomArray(n, x);
-				int B[] = Arrays.copyOf(A, n);
-				long starTime,endTime;
-				
-				starTime = System.nanoTime();
-				Arrays.sort(B);
-				endTime = System.nanoTime();
-				System.out.print("\tB:"+(endTime-starTime)*1.0/1000000+"ms\t");
-				
-				starTime = System.nanoTime();
-				QuickSort(A,0,n-1);
-				endTime = System.nanoTime();
-				System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			}
-			System.out.println();
-		}
-	}
-	/*x=0,n=1000,5000,10000,50000,100000,500000,1000000*/
-	private void Test6() {
-		int num[] = {200000,400000,600000,800000,1000000,1200000,1400000,1600000,1800000,2000000};
-		int x = 0;
-		System.out.println("x="+x);
-		for(int n:num) {
-			System.out.print("n="+n);
-			int A[] = randomArray(n, x);
-			int B[] = Arrays.copyOf(A, n);
-			//int B[] = copyofArray(A, n);
-			long starTime,endTime;
-			
-			starTime = System.nanoTime();
-			Arrays.sort(B);
-			endTime = System.nanoTime();
-			System.out.print("\tB:"+(endTime-starTime)*1.0/1000000+"ms\t");
-			
-			starTime = System.nanoTime();
-			QuickSort(A,0,n-1);
-			endTime = System.nanoTime();
-			System.out.println("\tA:"+(endTime-starTime)*1.0/1000000+"ms\t");
-		}
-	}
-	
-	private int[] copyofArray(int[] A,int n) {
-		int []B = new int[n];
-		for(int i=0;i<n;i++)
-			B[i] = A[i];
-		return B;
-	}
 	
 	private int[] randomArray(int n,int x) {
 		int p = n*x/100;
 		int i;
 		int A[] = new int[n];
 		for(i=0;i<p;i++)
-			A[i] = 1;
+			A[i] = Integer.MAX_VALUE/2;
 		for(;i<n;i++)
 			A[i] = (int)(Math.random()*Integer.MAX_VALUE); 
 		return A;
@@ -203,23 +113,16 @@ public class QuickSort {
 	private void newQuickSort(int[] A,int p,int r) {
 		if(p<r) {
 			int q = Rand_Partition(A, p, r);
-			boolean flag = false;
-			for(int i=p+1;i<=q-1;i++)
-				if(A[i]!=A[p]) {
-					flag = true;
+			int i;
+			for(i=q+1;i<=r;i++)
+				if(A[i]!=A[q])
 					break;
-				}
-			if(flag)
-				newQuickSort(A, p, q-1);
-			flag = false;
-			for(int i=q+2;i<=r;i++)
-				if(A[i]!=A[q+1]) {
-					flag = true;
+			newQuickSort(A,i,r);
+			for(i=q-1;i>=p;i--)
+				if(A[i]!=A[q])
 					break;
-				}
-			if(flag)
-				newQuickSort(A, q+1,r);		
-			}
+			newQuickSort(A,p,i);
+		}
 	}
 	
 	private int Rand_Partition(int[] A,int p,int r) {

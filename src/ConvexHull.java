@@ -73,7 +73,7 @@ public class ConvexHull {
 		
 		//Test1();
 		
-		int n = 500;
+		int n = 50;
 		Point[] points = hull.randomPoints(n, p1, p2);
 //		System.out.println("随机生成的点集为：");
 //		for(Point p:points)
@@ -109,7 +109,10 @@ public class ConvexHull {
 		savePointInFile(con3,"points3.txt");
 		
 		
-		int num[] = {100,200,500,800,1000,1500,2000,2500,3000};
+		//int num[] = {100,200,500,800,1000,1500,2000,2500,3000};
+		//int num[] = {1000,1200,1400,1600,1800,2000,2200,2400,2600,2800,3000};
+		//int num[] = {3000};
+		int num[] = {100000,200000,300000,400000,500000,600000,700000,800000,900000,1000000};
 		long starTime,endTime;
 		System.out.print("\tGramhamScan\tBruteForce\tDivide\n");
 		for(int m:num) {
@@ -122,17 +125,17 @@ public class ConvexHull {
 			endTime = System.nanoTime();
 			System.out.print((endTime-starTime)*1.0/1000000+"ms\t");
 			
-			starTime = System.nanoTime();
-			convex2 = hull.BruteForce(points);
-			endTime = System.nanoTime();
-			System.out.print((endTime-starTime)*1.0/1000000+"ms\t");
+//			starTime = System.nanoTime();
+//			convex2 = hull.BruteForce(points);
+//			endTime = System.nanoTime();
+//			System.out.print((endTime-starTime)*1.0/1000000+"ms\t");
 			
 			starTime = System.nanoTime();
 			convex3 = hull.DivideConquer(points);
 			endTime = System.nanoTime();
 			System.out.print((endTime-starTime)*1.0/1000000+"ms\t");
 			
-			if ( convex1.equals(convex2) && convex1.equals(convex3))
+			if ( /* convex1.equals(convex2) && */ convex1.equals(convex3))
 				System.out.println("凸包相同.顶点数："+convex1.size());
 			else
 				System.out.println("凸包不相同！！！顶点数："+convex1.size()+","+convex2.size()+","+convex3.size());

@@ -1,7 +1,5 @@
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 import org.gnu.glpk.*;
 
@@ -53,7 +51,7 @@ public class CoverSet {
 	
 	public void Test() {
 		
-		int m = 5000,n = 5000;
+		int m = 30,n = 30;
 		int X[] = new int[n];
 		Set<Integer> []F = randomSubSetFamily(m, n,20);
 		int i,j;
@@ -62,12 +60,12 @@ public class CoverSet {
 		for(i=0;i<X.length;i++) 
 			X[i] = i+1; 
 //		System.out.println();
-//		for(i=0;i<F.length;i++) {
-//			System.out.print("第"+i+"个子集为：");
-//			for(int x:F[i])
-//				System.out.print(x+",");
-//			System.out.println();
-//		}
+		for(i=0;i<F.length;i++) {
+			System.out.print("第"+i+"个子集为：");
+			for(int x:F[i])
+				System.out.print(x+",");
+			System.out.println();
+		}
 		
 		startTime = System.nanoTime();
 		List<Integer> S1 = greedySetCover(X,F);
@@ -89,33 +87,56 @@ public class CoverSet {
 		
 		System.out.println();
 		
-		int M[] = {100,1000,5000};
-		int N[] = {100,1000,5000};
-		int K[] = {20,20,20};
+		int M[] = {500,1000,1500,2000,2500,3000,3500,4000,4500,5000};
+		int N[] = {500,1000,1500,2000,2500,3000,3500,4000,4500,5000};
+		int K[] = {20,20,20,20,20,20,20,20,20,20};
 		int k;
-		for(i=0;i<M.length;i++) {
-			m = M[i];
-			n = N[i];
-			k = K[i];
-			X = new int[n];
-			for(j=0;j<n;j++)
-				X[j] = j+1; 
-			F = randomSubSetFamily(m, n, k);
-			
-			System.out.println("|X|="+n+",|F|="+m+",k="+k);
-			
-			startTime = System.nanoTime();
-			S1 = greedySetCover(X,F);
-			endTime = System.nanoTime();
-			System.out.println("贪心时间："+(endTime-startTime)*1.0/1000000+"ms\t");
-			System.out.println("贪心解大小："+S1.size());
-			
-			startTime = System.nanoTime();
-			S2 = SetCoverLP(X, F);
-			endTime = System.nanoTime();
-			System.out.println("LP时间："+(endTime-startTime)*1.0/1000000+"ms\t");
-			System.out.println("LP解大小："+S2.size());
-			System.out.println();
+		File file =new File("time4.txt");
+		File file2 = new File("result.txt");
+		PrintStream ps,ps2;
+		try {
+			if(file.exists()==false) {
+				file.createNewFile();
+			}
+			if(file2.exists()==false) {
+				file2.createNewFile();
+			}
+			FileOutputStream fos = new FileOutputStream(file);
+			ps = new PrintStream(fos);
+			FileOutputStream fos1 = new FileOutputStream(file2);
+			ps2 = new PrintStream(fos1);
+		
+			for(i=0;i<M.length;i++) {
+				m = M[i];
+				n = N[i];
+				k = K[i];
+				X = new int[n];
+				for(j=0;j<n;j++)
+					X[j] = j+1; 
+				F = randomSubSetFamily(m, n, k);
+				
+				System.out.println("|X|="+n+",|F|="+m+",k="+k);
+				
+				startTime = System.nanoTime();
+				S1 = greedySetCover(X,F);
+				endTime = System.nanoTime();
+				System.out.println("贪心时间："+(endTime-startTime)*1.0/1000000+"ms\t");
+				System.out.println("贪心解大小："+S1.size());
+				ps.print((endTime-startTime)*1.0/1000000+",");
+				ps2.print(S1.size()+",");
+				
+				
+				startTime = System.nanoTime();
+				S2 = SetCoverLP(X, F);
+				endTime = System.nanoTime();
+				System.out.println("LP时间："+(endTime-startTime)*1.0/1000000+"ms\t");
+				System.out.println("LP解大小："+S2.size());
+				ps.print((endTime-startTime)*1.0/1000000+"\n");
+				ps2.print(S2.size()+"\n");
+				System.out.println();
+			}
+		} catch(IOException e) {
+			System.out.println(e.getMessage());
 		}
 		
 	}
